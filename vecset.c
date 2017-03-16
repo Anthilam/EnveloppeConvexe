@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
+#include <assert.h>
+#include <stdbool.h>
 
 struct vec {
         double x;
@@ -13,6 +14,39 @@ struct vecset {
         size_t size;
         size_t capacity;
 };
+
+double dot(const struct vec *v1, const struct vec *v2) {
+        return (v1->x*v2->x + v1->y*v2->y);
+}
+
+double cross(const struct vec *p1, const struct vec *p2, const struct vec *p3) {
+        return (((v2->x - v1->x) * (v3->y - v1->y)) - ((v2->y - v1->y)*(v3->x - v1->x)));
+}
+
+void vecset_push(struct vecset *self, struct vec p) {
+        assert(self);
+        vecset_add(self, p);
+}
+
+void vecset_pop(struct vecset *self) {
+        assert(self);
+        free(self[self->size-1]);
+        self->size -= 1;
+}
+
+const struct vec *vecset_top(const struct vecset *self) {
+        assert(self);
+        return self[self->size-1];
+}
+
+const struct vec *vecset_second(const struct vecset *self) {
+        assert(self);
+        return self[self->size-2];
+}
+
+bool is_left_turn(const struct vec *p1, const struct vec *p2, const struct vec *p3) {
+        return (cross(p1, p2, p3) > 0);
+}
 
 // Create a set of vector
 void vecset_create(struct vecset *self) {
@@ -73,21 +107,6 @@ const struct vec *vecset_min(const struct vecset *self, comp_func_t func, const 
 // Sort a set of vector
 void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx);
 
-int main(int argc, char *argv[])
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int main(int argc, char *argv[]) {
 
 }
