@@ -3,7 +3,11 @@
 #include <assert.h>
 #include <string.h>
 #include <stdbool.h>
+#include "vecset.h"
+#include "convex.h"
 
+#define BUFSIZE 1024
+// Timothée LAURENT - Timothée GUY
 
 int main() {
 	setbuf(stdout, NULL); // avoid buffering in the output

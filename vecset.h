@@ -6,6 +6,12 @@
 #include <assert.h>
 #include <string.h>
 #include <stdbool.h>
+// Timothée LAURENT - Timothée GUY
+
+/* 
+  This header contains the functions related to vecsets (sets of vectors)
+  defined in the strutures below 
+*/
 
 struct vec {
 	double x;
@@ -47,4 +53,18 @@ double cross(const struct vec *p1, const struct vec *p2, const struct vec *p3);
 
 // determinates if 2 vectors are forming a left or a right turn
 bool is_left_turn(const struct vec *p1, const struct vec *p2, const struct vec *p3);
+
+// returns the max vector of a set of vectors
+const struct vec *vecset_max(const struct vecset *self, comp_func_t func, const void *ctx);
+
+// returns the min vector of a set of vectors
+const struct vec *vecset_min(const struct vecset *self, comp_func_t func, const void *ctx);
+
+// sorts a set of vectors
+void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx);
+
+// compares two vectors
+typedef int *(comp_func_t)(struct vec *p1, const struct vec *p2, const void *ctx);
+
+const struct vec *vecset_random(const struct vecset *self);
 #endif
