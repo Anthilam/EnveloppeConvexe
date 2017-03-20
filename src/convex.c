@@ -23,9 +23,11 @@ void jarvis_march(const struct vecset *in, struct vecset *out) {
 								struct vec *current = malloc(sizeof(struct vec));
 								*current = *first;
 
+								int j = 0;
 								do {
 																vecset_add(out, *current);
 																struct vec *next = malloc(sizeof(struct vec));
+																next = &in->data[j];
 
 																for (int i = 0; i < in->size; i++) {
 																								if (is_left_turn(current, &in->data[i], next)) {
@@ -33,5 +35,6 @@ void jarvis_march(const struct vecset *in, struct vecset *out) {
 																								}
 																}
 																current = next;
+																++j;
 								} while (first != current);
 }
