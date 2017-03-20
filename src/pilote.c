@@ -14,26 +14,26 @@
 #define BUFSIZE 1024
 
 int main() {
-								setbuf(stdout, NULL); // avoid buffering in the output
+	setbuf(stdout, NULL); // avoid buffering in the output
 
-								char buffer[BUFSIZE];
-								fgets(buffer, BUFSIZE, stdin);
+	char buffer[BUFSIZE];
+	fgets(buffer, BUFSIZE, stdin);
 
-								size_t count = strtol(buffer, NULL, 10);
+	size_t count = strtol(buffer, NULL, 10);
 
-								printf("%lu\n", count);
-								for (size_t i = 0; i < count; ++i) {
-																struct vec p;
+	printf("%lu\n", count);
+	for (size_t i = 0; i < count; ++i) {
+		struct vec p;
 
-																fgets(buffer, BUFSIZE, stdin);
+		fgets(buffer, BUFSIZE, stdin);
 
-																char *endptr = buffer;
-																p.x = strtod(endptr, &endptr);
-																p.y = strtod(endptr, &endptr);
+		char *endptr = buffer;
+		p.x = strtod(endptr, &endptr);
+		p.y = strtod(endptr, &endptr);
 
-																printf("%f %f\n", p.x, p.y);
-																// then do something with p
-								}
+		printf("%f %f\n", p.x, p.y);
+		// then do something with p
+	}
 
-								return 0;
+	return 0;
 }

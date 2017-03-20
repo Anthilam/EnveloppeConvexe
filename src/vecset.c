@@ -1,6 +1,6 @@
 /*
-    GUY Timothée , LAURENT Timothée
-    Groupe TP2A - CMI
+	GUY Timothée , LAURENT Timothée
+	Groupe TP2A - CMI
  */
 
 #include <stdlib.h>
@@ -21,7 +21,7 @@ double dot(const struct vec *v1, const struct vec *v2) {
 /* Calculates the cross product of 3 vectors
    Test = OK */
 double cross(const struct vec *v1, const struct vec *v2, const struct vec *v3) {
-        return ((v2->x-v1->x)*(v3->y-v1->y))-((v2->y-v1->y)*(v3->x-v1->x));
+	return ((v2->x-v1->x)*(v3->y-v1->y))-((v2->y-v1->y)*(v3->x-v1->x));
 }
 
 /* Determinates if two vectors are forming a left or a right turn
@@ -122,7 +122,7 @@ const struct vec *vecset_second(const struct vecset *self) {
         return &self->data[self->size-2];
 }
 
-/* Compare two vectors by their x coordinates
+/* Compares two vectors using their x coordinates
    Test = OK */
 int compare_x(const struct vec *p1, const struct vec *p2, const void *ctx) {
         if (p1->x < p2->x) {
@@ -133,7 +133,17 @@ int compare_x(const struct vec *p1, const struct vec *p2, const void *ctx) {
         }
         return 0;
 }
-
+/* Compares two vectors using their y coordinates first and then their x coordinates
+   Test = OK */
+int compare_all(const struct vec *p1, const struct vec *p2, const void *ctx) {
+	if (p1->y < p2->y) {
+		return -1;
+	}
+	else if(p1->y > p2->y) {
+		return 1;	
+	}
+	compare_x(p1, p2, ctx);
+}
 /* Returns the max vector of a set of vectors
    Test = OK */
 const struct vec *vecset_max(const struct vecset *self, comp_func_t func, const void *ctx) {
@@ -160,11 +170,47 @@ const struct vec *vecset_min(const struct vecset *self, comp_func_t func, const 
         return res;
 }
 
-/* Sorts a set of vectors
-   Test = ? */
-void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx);
 
-int main() {
+/* Sorts a set of vectors
+   Test = OK */
+void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx) {
+	long n = self->size;
+	vector_quick_sort_partial(self, 0, n - 1, func);
+}
+
+/* Swaps two vectors in a vecset */
+void vector_swap(struct vecset *self, size_t i, size_t j) {
+	struct vec tmp = self->data[i];
+	self->data[i] = self->data[j];
+	self->data[j] = tmp;
+}
+
+long vector_partition(struct vecset *self, long i, long j, comp_func_t func) {
+	long pivot_index = i;
+	const struct vec pivot = self->data[pivot_index];
+	vector_swap(self, pivot_index, j);
+	long l = i;
+	for (long k = i; k < j; ++k) {
+		if (compare_all(&self->data[k],&pivot, 0) == -1) {
+			vector_swap(self, k, l);
+			l++;
+		}
+	}
+	vector_swap(self, l, j);
+	return l;
+}
+
+void vector_quick_sort_partial(struct vecset *data, long i, long j, comp_func_t func) {
+	if (i < j) {
+		long p = vector_partition(data, i, j, func);
+		vector_quick_sort_partial(data, i, p - 1, func);
+		vector_quick_sort_partial(data, p + 1, j, func);
+	}
+}
+
+	
+//Temporary main function in order to test vecset functions
+/*int main() {
         struct vecset *set = malloc(sizeof(struct vecset));
         vecset_create(set);
 
@@ -180,17 +226,18 @@ int main() {
         vec_create(v3, 4, 6);
         vec_create(v4, 5, 2);
 
+
         vecset_add(set, *v);
         vecset_add(set, *v1);
         vecset_add(set, *v2);
         vecset_add(set, *v3);
         vecset_add(set, *v4);
 
-        vecset_dump(set);
-
+       
+	vector_set_sort(set, compare_all, NULL);
+	vecset_dump(set);
         const struct vec *res = vecset_min(set, &compare_x, NULL);
         vec_dump(res);
-
         vec_destroy(v);
         vec_destroy(v1);
         vec_destroy(v2);
@@ -199,4 +246,4 @@ int main() {
         vecset_destroy(set);
 
         return 0;
-}
+}*/
