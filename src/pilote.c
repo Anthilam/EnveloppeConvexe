@@ -14,7 +14,12 @@
 #define BUFSIZE 1024
 
 int main() {
-								setbuf(stdout, NULL); // avoid buffering in the output
+								setbuf(stdout, NULL);                                                  // avoid buffering in the output
+
+								struct vecset *self = malloc(sizeof(struct vecset));
+								struct vecset *out = malloc(sizeof(struct vecset));
+								vecset_create(self);
+								vecset_create(out);
 
 								char buffer[BUFSIZE];
 								fgets(buffer, BUFSIZE, stdin);
@@ -31,8 +36,14 @@ int main() {
 																p.x = strtod(endptr, &endptr);
 																p.y = strtod(endptr, &endptr);
 
-																printf("%f %f\n", p.x, p.y);
-																// then do something with p
+																vecset_add(self, p);
+								}
+
+								jarvis_march(self, out);
+
+								printf("%zu\n", out->size);
+								for (size_t i = 0; i < out->size; ++i) {
+																printf("%f %f", out->data[i].x, out->data[i].y);
 								}
 
 								return 0;

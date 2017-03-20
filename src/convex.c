@@ -11,9 +11,9 @@
 #include "vecset.h"
 #include "convex.h"
 
-struct vecset *jarvis_march(const struct vecset *in, struct vecset *out) {
-								// On initialise le vecset que l'on va calculer
-								struct vecset *res = malloc(sizeof(struct vecset));
+void jarvis_march(const struct vecset *in, struct vecset *out) {
+								assert(in);
+								assert(out);
 
 								// first est le point le plus à droite
 								const struct vec *first = malloc(sizeof(struct vec));
@@ -24,7 +24,7 @@ struct vecset *jarvis_march(const struct vecset *in, struct vecset *out) {
 								*current = *first;
 
 								do {
-																vecset_add(res, *current);
+																vecset_add(out, *current);
 																struct vec *next = malloc(sizeof(struct vec));
 
 																for (int i = 0; i < in->size; i++) {
@@ -34,5 +34,4 @@ struct vecset *jarvis_march(const struct vecset *in, struct vecset *out) {
 																}
 																current = next;
 								} while (first != current);
-								return res;
 }
