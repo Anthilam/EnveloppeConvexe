@@ -24,4 +24,5 @@ void graham_scan(const struct vecset *in, struct vecset *out);
 // Quick hull function
 void quickhull(const struct vecset *in, struct vecset *out);
 
+struct vecset findhull(const struct vecset *in, const struct vec *A, const struct vec *B);
 #endif

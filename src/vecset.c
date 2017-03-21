@@ -8,6 +8,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <math.h>
 #include "vecset.h"
 
 /*---FUNCTIONS----------------------------------------------------------------*/
@@ -133,6 +134,7 @@ int compare_x(const struct vec *p1, const struct vec *p2, const void *ctx) {
         }
         return 0;
 }
+
 /* Compares two vectors using their y coordinates first and then their x coordinates
    Test = OK */
 int compare_all(const struct vec *p1, const struct vec *p2, const void *ctx) {
@@ -144,6 +146,31 @@ int compare_all(const struct vec *p1, const struct vec *p2, const void *ctx) {
 	}
 	compare_x(p1, p2, ctx);
 }
+
+/* Compares two vectors based on their angle with the origin axis
+   Test = ?*/
+int compare_angle(const struct vec *p1, const struct vec *p2, const void *ctx) {
+	struct vec *ref = ctx;
+	
+	double dp1X = p1->x - ref->x;
+	double dp1Y = p1->y - ref->y;
+	
+	double dp2X = p2->x - ref->x;
+	double dp2Y = p2->y - ref->y;
+
+	double ap1 = atan2(dp1X, dp1Y);
+	double ap2 = atan2(dp2X, dp2Y);
+
+	if (ap1 > ap2) {
+		return 1;
+	}
+	if (ap1 < ap2) {
+		return -1;	 
+	}
+	return 0;
+	
+}
+
 /* Returns the max vector of a set of vectors
    Test = OK */
 const struct vec *vecset_max(const struct vecset *self, comp_func_t func, const void *ctx) {

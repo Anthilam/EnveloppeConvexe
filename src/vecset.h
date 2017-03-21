@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 /*
   This header contains the functions related to vecsets (sets of vectors)
@@ -40,6 +41,9 @@ int compare_x(const struct vec *p1, const struct vec *p2, const void *ctx);
 
 // Compares two vectors using their y coordinates first and then their x coordinates
 int compare_all(const struct vec *p1, const struct vec *p2, const void *ctx);
+
+// Compares two vectors based on their angle with the origin axis
+int compare_angle(const struct vec *p1, const struct vec *p2, const void *ctx);
 
 //---FUNCTIONS------------------------------------------------------------------
 
