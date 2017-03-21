@@ -1,7 +1,7 @@
 /*
-		GUY Timothée , LAURENT Timothée
-		Groupe TP2A - CMI
-*/
+   GUY Timothée , LAURENT Timothée
+   Groupe TP2A - CMI
+ */
 
 #ifndef VECSET_H
 #define VECSET_H
@@ -13,21 +13,21 @@
 #include <stdbool.h>
 
 /*
-  This header contains the functions related to vecsets (sets of vectors)
-  defined in the strutures below
-*/
+   This header contains the functions related to vecsets (sets of vectors)
+   defined in the strutures below
+ */
 
 //---STRUCTURES-----------------------------------------------------------------
 
 struct vec {
-	double x;
-	double y;
+								double x;
+								double y;
 };
 
 struct vecset {
-	struct vec *data;
-	size_t size;
-	size_t capacity;
+								struct vec *data;
+								size_t size;
+								size_t capacity;
 };
 
 //---COMPARE--------------------------------------------------------------------
@@ -87,6 +87,9 @@ const struct vec *vecset_max(const struct vecset *self, comp_func_t func, const 
 
 // Returns the min vector of a set of vectors
 const struct vec *vecset_min(const struct vecset *self, comp_func_t func, const void *ctx);
+
+// Gets a random vectors from a vecset
+void vec_random(struct vec *self, const struct vecset *in, struct vecset *out);
 
 // Sorts a set of vectors
 void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx);

@@ -1,6 +1,6 @@
 /*
-   GUY Timothée , LAURENT Timothée
-   Groupe TP2A - CMI
+ * GUY Timothée , LAURENT Timothée
+ * Groupe TP2A - CMI
  */
 
 #include <stdlib.h>
@@ -13,38 +13,35 @@
 
 #define BUFSIZE 1024
 
-int main() {
-								setbuf(stdout, NULL);                                                  // avoid buffering in the output
+int main()
+{
+    setbuf(stdout, NULL); // avoid buffering in the output
 
-								struct vecset *self = malloc(sizeof(struct vecset));
-								struct vecset *out = malloc(sizeof(struct vecset));
-								vecset_create(self);
-								vecset_create(out);
+    struct vecset * self = malloc(sizeof(struct vecset));
+    struct vecset * out  = malloc(sizeof(struct vecset));
+    vecset_create(self);
+    vecset_create(out);
 
-								char buffer[BUFSIZE];
-								fgets(buffer, BUFSIZE, stdin);
+    char buffer[BUFSIZE];
+    fgets(buffer, BUFSIZE, stdin);
 
-								size_t count = strtol(buffer, NULL, 10);
+    size_t count = strtol(buffer, NULL, 10);
 
-								printf("%lu\n", count);
-								for (size_t i = 0; i < count; ++i) {
-																struct vec p;
+    for (size_t i = 0; i < count; ++i) {
+        struct vec p;
 
-																fgets(buffer, BUFSIZE, stdin);
+        fgets(buffer, BUFSIZE, stdin);
 
-																char *endptr = buffer;
-																p.x = strtod(endptr, &endptr);
-																p.y = strtod(endptr, &endptr);
+        char * endptr = buffer;
+        p.x = strtod(endptr, &endptr);
+        p.y = strtod(endptr, &endptr);
 
-																vecset_add(self, p);
-								}
+        vecset_add(self, p);
+    }
 
-								jarvis_march(self, out);
+    jarvis_march(self, out);
+    printf("%lu\n", out->size);
+    vecset_dump(out);
 
-								printf("%zu\n", out->size);
-								for (size_t i = 0; i < out->size; ++i) {
-																printf("%f %f", out->data[i].x, out->data[i].y);
-								}
-
-								return 0;
+    return 0;
 }
