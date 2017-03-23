@@ -47,14 +47,15 @@ void vec_destroy(struct vec *self) {
 /* Print a vector
    Test = OK */
 void vec_dump(const struct vec *self) {
-        printf("(%f, %f)\n", self->x, self->y);
+        printf("%f %f\n", self->x, self->y);
 }
 
 /* Creates a set of vectors
    Test = OK */
 void vecset_create(struct vecset *self) {
-        self->data = NULL;
-        self->capacity = 0;
+	assert(self);
+        self->data = malloc(6*sizeof(struct vec));
+        self->capacity = 6;
         self->size = 0;
 }
 
@@ -79,9 +80,11 @@ void vecset_dump(const struct vecset *self){
 /* Adds a vector to a set of vector
    Test = OK */
 void vecset_add(struct vecset *self, struct vec p) {
+	
+	
         if (self->size == self->capacity)
         {
-                ++self->capacity;
+                self->capacity = self->capacity*2 ;
                 struct vec *data = calloc(self->capacity, sizeof(struct vec));
                 memcpy(data, self->data, self->size * sizeof(struct vec));
                 free(self->data);
@@ -145,12 +148,13 @@ int compare_all(const struct vec *p1, const struct vec *p2, const void *ctx) {
 		return 1;	
 	}
 	compare_x(p1, p2, ctx);
+	return 0;
 }
 
 /* Compares two vectors based on their angle with the origin axis
    Test = ?*/
 int compare_angle(const struct vec *p1, const struct vec *p2, const void *ctx) {
-	struct vec *ref = ctx;
+	const struct vec *ref = ctx;
 	
 	double dp1X = p1->x - ref->x;
 	double dp1Y = p1->y - ref->y;
