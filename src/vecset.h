@@ -38,6 +38,18 @@ typedef int (*comp_func_t)(const struct vec *p1, const struct vec *p2, const voi
 // Compare two vectors by their x coordinates
 int compare_x(const struct vec *p1, const struct vec *p2, const void *ctx);
 
+// Compare two vectors by their y coordinates
+int compare_y(const struct vec *p1, const struct vec *p2, const void *ctx);
+
+// Compare two vectors by their x y coordinates
+int compare_left_bottom(const struct vec *p1, const struct vec *p2, const void *ctx);
+
+// Compares two vectors using their y coordinates first and then their x coordinates
+int compare_all(const struct vec *p1, const struct vec *p2, const void *ctx);
+
+// Compares two vectors based on their angle with the origin axis
+int compare_angle(const struct vec *p1, const struct vec *p2, const void *ctx);
+
 //---FUNCTIONS------------------------------------------------------------------
 
 // Calculates the dot product of 2 vectors
@@ -88,10 +100,10 @@ const struct vec *vecset_max(const struct vecset *self, comp_func_t func, const 
 // Returns the min vector of a set of vectors
 const struct vec *vecset_min(const struct vecset *self, comp_func_t func, const void *ctx);
 
-// Gets a random vectors from a vecset
-void vec_random(struct vec *self, const struct vecset *in, struct vecset *out);
-
 // Sorts a set of vectors
 void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx);
+
+// Quick sort
+void vector_quick_sort_partial(struct vecset *data, long i, long j, comp_func_t func);
 
 #endif
