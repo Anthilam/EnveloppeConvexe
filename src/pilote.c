@@ -39,7 +39,7 @@ int main()
         vecset_add(self, p);
     }
 
-    jarvis_march(self, out);
+    graham_scan(self, out);
     printf("%lu\n", out->size);
     vecset_dump(out);
 

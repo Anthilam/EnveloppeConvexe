@@ -103,7 +103,12 @@ const struct vec *vecset_min(const struct vecset *self, comp_func_t func, const 
 // Sorts a set of vectors
 void vector_set_sort(struct vecset *self, comp_func_t func, const void *ctx);
 
-// Quick sort
-void vector_quick_sort_partial(struct vecset *data, long i, long j, comp_func_t func);
+//---FUNCTIONS RELATED TO vector_set_sort---------------------------------------
+long vector_partition(struct vecset *self, long i, long j, comp_func_t func, const void *ctx);
+
+// Swaps two vectors in a vecset
+void vector_swap(struct vecset *self, size_t i, size_t j);
+
+void vector_quick_sort_partial(struct vecset *data, long i, long j, comp_func_t func, const void *ctx);
 
 #endif
