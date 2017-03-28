@@ -27,7 +27,7 @@ void jarvis_march(const struct vecset * in, struct vecset * out)
         vecset_add(out, *v);
     } else {
         const struct vec * first = vecset_min(in, &compare_left_bottom, NULL);
-        struct vec * current = malloc(sizeof(struct vec));
+        struct vec * current     = malloc(sizeof(struct vec));
         current->x = first->x;
         current->y = first->y;
         struct vec * next;
@@ -98,52 +98,101 @@ void graham_scan(const struct vecset * in, struct vecset * out)
     vecset_destroy(s);
 } /* graham_scan */
 
+struct vecset * findhull(struct vecset * S, const struct vec * X, const struct vec * Y)
+{
+    if (S->size == 0) {
+        return S;
+    }
+
+    double m = (X->y - Y->y) / (X->x - Y->x);
+    double p = X->y - m * X->x;
+
+    struct vec * M = malloc(sizeof(struct vec));
+    double res     = 0;
+    for (int i = 0; i < S->size; ++i) {
+        if ((fabs(m * S->data[i].x - S->data[i].y + p) / sqrt(pow(m, 2) + 1)) > res) {
+            M   = &S->data[i];
+            res = (fabs(m * S->data[i].x - S->data[i].y + p) / sqrt(pow(m, 2) + 1));
+        }
+    }
+
+    struct vecset * S1 = malloc(sizeof(struct vecset));
+    struct vecset * S2 = malloc(sizeof(struct vecset));
+    vecset_create(S1);
+    vecset_create(S2);
+
+    for (size_t i = 0; i < S->size; i++) {
+        if (S->data[i].x != M->x && S->data[i].y != M->y) {
+            const struct vec test = S->data[i];
+            // on the left of XM
+            if (is_left_turn(X, M, &test)) {
+                vecset_push(S1, S->data[i]);
+                // on the left of MY
+            } else if (is_left_turn(M, Y, &test)) {
+                vecset_push(S2, S->data[i]);
+            }
+        }
+    }
+
+    struct vecset * R1 = malloc(sizeof(struct vecset));
+    struct vecset * R2 = malloc(sizeof(struct vecset));
+
+    R1 = findhull(S1, X, M);
+    R2 = findhull(S2, M, Y);
+
+    struct vecset * R = malloc(sizeof(struct vecset));
+    vecset_create(R);
+    for (int i = 0; i < R1->size; ++i) {
+        vecset_add(R, R1->data[i]);
+    }
+    vecset_add(R, *M);
+    for (int i = 0; i < R2->size; ++i) {
+        vecset_add(R, R2->data[i]);
+    }
+
+    return R;
+} /* findhull */
+
 void quickhull(const struct vecset * in, struct vecset * out)
 {
     assert(in);
     assert(out);
-    // If there are less than 4 points, they are all part of the convex hull
-    if (in->size <= 3) {
-        for (size_t i = 0; i < in->size; ++i) {
-            vecset_add(out, in->data[i]);
-            if (in->size == 2 && i == 0) {
-                struct vec * v = malloc(sizeof(struct vec));
-                vec_create(v, (in->data[0].x + in->data[1].x) / 2, (in->data[0].y + in->data[1].y) / 2);
-                vecset_add(out, *v);
+
+    // Leftmost point in the input
+    const struct vec A = *vecset_min(in, compare_x, NULL);
+    // Rightmost point in the input
+    const struct vec B = *vecset_max(in, compare_x, NULL);
+    // Copy of the input into s (without the leftmost and rightmost points)
+    struct vecset * S1 = malloc(sizeof(struct vecset));
+    struct vecset * S2 = malloc(sizeof(struct vecset));
+    vecset_create(S1);
+    vecset_create(S2);
+
+    for (size_t i = 0; i < in->size; i++) {
+        if (in->data[i].x != A.x && in->data[i].x != B.x &&
+          in->data[i].y != A.y && in->data[i].y != B.y)
+        {
+            const struct vec test = in->data[i];
+            if (is_left_turn(&A, &B, &test)) {
+                vecset_push(S1, in->data[i]);
+            } else {
+                vecset_push(S2, in->data[i]);
             }
         }
-        return;
     }
-    // Leftmost point in the input
-    const struct vec leftmost = *vecset_min(in, compare_x, NULL);
-    // Rightmost point in the input
-    const struct vec rightmost = *vecset_max(in, compare_x, NULL);
-    // Copy of the input into s (without the leftmost and rightmost points)
-    struct vecset * s = malloc(sizeof(struct vecset));
-    vecset_create(s);
-    for (size_t i = 0; i < in->size; i++) {
-        if (compare_all(&in->data[i], &leftmost, NULL) && compare_all(&in->data[i], &rightmost, NULL)) {
-            vecset_push(s, in->data[i]);
-        }
-    }
-    struct vecset * leftpart  = malloc(sizeof(struct vecset));
-    struct vecset * rightpart = malloc(sizeof(struct vecset));
 
-    vecset_create(leftpart);
-    vecset_create(rightpart);
+    struct vecset * R1 = malloc(sizeof(struct vecset));
+    struct vecset * R2 = malloc(sizeof(struct vecset));
 
-    for (size_t i = 0; i < s->size; i++) {
-        // if (s->data[i] == NULL) {//??? A FAIRE (c'est quoi la condition???)
-        vecset_add(leftpart, s->data[i]);
-        // }
-        // else {
-        vecset_add(rightpart, s->data[i]);
-        // }
+    R1 = findhull(S1, &A, &B);
+    R2 = findhull(S2, &B, &A);
+
+    vecset_add(out, A);
+    for (int i = 0; i < R1->size; ++i) {
+        vecset_add(out, R1->data[i]);
     }
-    // struct vecset R1 = NULL;
-    // struct vecset R2 = NULL;
+    vecset_add(out, B);
+    for (int i = 0; i < R2->size; ++i) {
+        vecset_add(out, R2->data[i]);
+    }
 } /* quickhull */
-
-/*struct vecset findhull(const struct vecset *in, const struct vec *A, const struct vec *B) {
- *  return NULL;
- * }*/

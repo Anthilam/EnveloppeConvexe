@@ -39,7 +39,7 @@ int main()
         vecset_add(self, p);
     }
 
-    graham_scan(self, out);
+    quickhull(self, out);
     printf("%lu\n", out->size);
     vecset_dump(out);
 
