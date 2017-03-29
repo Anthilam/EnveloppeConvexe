@@ -1,6 +1,6 @@
 /*
-		GUY Timothée , LAURENT Timothée
-		Groupe TP2A - CMI
+  GUY Timothée , LAURENT Timothée
+  Groupe TP2A - CMI
 */
 
 #ifndef CONVEX_H
@@ -24,4 +24,6 @@ void graham_scan(const struct vecset *in, struct vecset *out);
 // Quick hull function
 void quickhull(const struct vecset *in, struct vecset *out);
 
+// Find hull function (used in the quick hull function)
+struct vecset * findhull(struct vecset * S, const struct vec * X, const struct vec * Y);
 #endif

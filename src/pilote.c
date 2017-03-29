@@ -1,7 +1,7 @@
 /*
- * GUY Timothée , LAURENT Timothée
- * Groupe TP2A - CMI
- */
+  GUY Timothée , LAURENT Timothée
+  Groupe TP2A - CMI
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,7 +15,7 @@
 
 int main()
 {
-    setbuf(stdout, NULL); // avoid buffering in the output
+    setbuf(stdout, NULL); // avoids buffering in the output
 
     struct vecset * self = malloc(sizeof(struct vecset));
     struct vecset * out  = malloc(sizeof(struct vecset));
@@ -38,8 +38,13 @@ int main()
 
         vecset_add(self, p);
     }
+	// Uncomment the algorithm you want to use and comment the others  :
+    jarvis_march(self, out);
+    //graham_scan(self, out)
+    //quickhull(self, out);
+    //------------------------------------------------------------------
 
-    quickhull(self, out);
+    //Prints the output : 
     printf("%lu\n", out->size);
     vecset_dump(out);
 

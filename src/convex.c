@@ -54,7 +54,7 @@ void jarvis_march(const struct vecset * in, struct vecset * out)
         } while (first != current);
     }
 } /* jarvis_march */
-
+/* Graham scan algorithm */
 void graham_scan(const struct vecset * in, struct vecset * out)
 {
     assert(in);
@@ -98,6 +98,7 @@ void graham_scan(const struct vecset * in, struct vecset * out)
     vecset_destroy(s);
 } /* graham_scan */
 
+/* Find hull function */
 struct vecset * findhull(struct vecset * S, const struct vec * X, const struct vec * Y)
 {
     if (S->size == 0) {
@@ -153,6 +154,7 @@ struct vecset * findhull(struct vecset * S, const struct vec * X, const struct v
     return R;
 } /* findhull */
 
+/* Quickhull algorithm */
 void quickhull(const struct vecset * in, struct vecset * out)
 {
     assert(in);

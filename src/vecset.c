@@ -1,7 +1,7 @@
 /*
- *  GUY Timothée , LAURENT Timothée
- *  Groupe TP2A - CMI
- */
+  GUY Timothée , LAURENT Timothée
+  Groupe TP2A - CMI
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,51 +13,44 @@
 
 /*---FUNCTIONS----------------------------------------------------------------*/
 
-/* Calculates the dot product of 2 vectors
- * Test = OK */
+/* Calculates the dot product of 2 vectors */
 double dot(const struct vec * v1, const struct vec * v2)
 {
     return v1->x * v2->x + v1->y * v2->y;
 }
 
-/* Calculates the cross product of 3 vectors
- * Test = OK */
+/* Calculates the cross product of 3 vectors */
 double cross(const struct vec * v1, const struct vec * v2, const struct vec * v3)
 {
     return ((v2->x - v1->x) * (v3->y - v1->y)) - ((v2->y - v1->y) * (v3->x - v1->x));
 }
 
-/* Determinates if two vectors are forming a left or a right turn
- * TEST = OK */
+/* Determinates if two vectors are forming a left or a right turn */
 bool is_left_turn(const struct vec * p1, const struct vec * p2, const struct vec * p3)
 {
     return cross(p1, p2, p3) > 0;
 }
 
-/* Create a vector
- * Test = OK */
+/* Create a vector */
 void vec_create(struct vec * self, double x, double y)
 {
     self->x = x;
     self->y = y;
 }
 
-/* Destroy a vector
- * Test = OK */
+/* Destroys a vector */
 void vec_destroy(struct vec * self)
 {
     free(self);
 }
 
-/* Print a vector
- * Test = OK */
+/* Prints a vector */
 void vec_dump(const struct vec * self)
 {
     printf("%f %f\n", self->x, self->y);
 }
 
-/* Creates a set of vectors
- * Test = OK */
+/* Creates a set of vectors */
 void vecset_create(struct vecset * self)
 {
     assert(self);
@@ -66,8 +59,7 @@ void vecset_create(struct vecset * self)
     self->size     = 0;
 }
 
-/* Destroys a set of vectors
- * Test = OK */
+/* Destroys a set of vectors */
 void vecset_destroy(struct vecset * self)
 {
     assert(self);
@@ -75,8 +67,7 @@ void vecset_destroy(struct vecset * self)
     free(self);
 }
 
-/* Print a set of vectors
- * Test = OK */
+/* Prints a set of vectors */
 void vecset_dump(const struct vecset * self)
 {
     for (int i = 0; i < self->size; ++i) {
@@ -85,8 +76,7 @@ void vecset_dump(const struct vecset * self)
     printf("\n");
 }
 
-/* Adds a vector to a set of vector
- * Test = OK */
+/* Adds a vector to a set of vector */
 void vecset_add(struct vecset * self, struct vec p)
 {
     if (self->size == self->capacity) {
@@ -100,16 +90,14 @@ void vecset_add(struct vecset * self, struct vec p)
     ++self->size;
 }
 
-/* Pushes an element on top of the pile
- * Test = OK */
+/* Pushes an element on top of the pile */
 void vecset_push(struct vecset * self, struct vec p)
 {
     assert(self);
     vecset_add(self, p);
 }
 
-/* Pops the element at the top of the pile
- * Test = OK */
+/* Pops the element at the top of the pile */
 void vecset_pop(struct vecset * self)
 {
     assert(self);
@@ -120,24 +108,21 @@ void vecset_pop(struct vecset * self)
     --self->size;
 }
 
-/* Returns the first element of the pile
- * Test = OK */
+/* Returns the first element of the pile */
 const struct vec * vecset_top(const struct vecset * self)
 {
     assert(self);
     return &self->data[self->size - 1];
 }
 
-/* Returns the second element of the pile
- * Test = OK */
+/* Returns the second element of the pile */
 const struct vec * vecset_second(const struct vecset * self)
 {
     assert(self);
     return &self->data[self->size - 2];
 }
 
-/* Compares two vectors using their x coordinates
- * Test = OK */
+/* Compares two vectors using their x coordinates */
 int compare_x(const struct vec * p1, const struct vec * p2, const void * ctx)
 {
     if (p1->x < p2->x) {
@@ -148,8 +133,7 @@ int compare_x(const struct vec * p1, const struct vec * p2, const void * ctx)
     return 0;
 }
 
-/* Compare two vectors by their y coordinates
- * Test = OK */
+/* Compares two vectors by their y coordinates */
 int compare_y(const struct vec * p1, const struct vec * p2, const void * ctx)
 {
     if (p1->y < p2->y) {
@@ -160,8 +144,7 @@ int compare_y(const struct vec * p1, const struct vec * p2, const void * ctx)
     return 0;
 }
 
-/* Compares two vectors by their most left-bottomness
- * Test = OK */
+/* Compares two vectors by their most left-bottomness */
 int compare_left_bottom(const struct vec * p1, const struct vec * p2, const void * ctx)
 {
     if (compare_x(p1, p2, ctx) == 1) {
@@ -174,8 +157,7 @@ int compare_left_bottom(const struct vec * p1, const struct vec * p2, const void
     return 0;
 }
 
-/* Compares two vectors using their y coordinates first and then their x coordinates
- * Test = OK */
+/* Compares two vectors using their y coordinates first and then their x coordinates */
 int compare_all(const struct vec * p1, const struct vec * p2, const void * ctx)
 {
     if (p1->y < p2->y) {
@@ -187,8 +169,7 @@ int compare_all(const struct vec * p1, const struct vec * p2, const void * ctx)
     return 0;
 }
 
-/* Compares two vectors based on their angle with the origin axis
- * Test = ?*/
+/* Compares two vectors based on their angle with the origin axis */
 int compare_angle(const struct vec * p1, const struct vec * p2, const void * ctx)
 {
     assert(ctx);
@@ -214,8 +195,7 @@ int compare_angle(const struct vec * p1, const struct vec * p2, const void * ctx
     return compare_all(p1, p2, ctx);
 }
 
-/* Returns the max vector of a set of vectors
- * Test = OK */
+/* Returns the max vector of a set of vectors */
 const struct vec * vecset_max(const struct vecset * self, comp_func_t func, const void * ctx)
 {
     struct vec * res = &self->data[0];
@@ -229,8 +209,7 @@ const struct vec * vecset_max(const struct vecset * self, comp_func_t func, cons
     return res;
 }
 
-/* Returns the min vector of a set of vectors
- * Test = OK */
+/* Returns the min vector of a set of vectors */
 const struct vec * vecset_min(const struct vecset * self, comp_func_t func, const void * ctx)
 {
     struct vec * res = &self->data[0];
@@ -244,8 +223,7 @@ const struct vec * vecset_min(const struct vecset * self, comp_func_t func, cons
     return res;
 }
 
-/* Sorts a set of vectors
- * Test = OK */
+/* Sorts a set of vectors */
 void vector_set_sort(struct vecset * self, comp_func_t func, const void * ctx)
 {
     long n = self->size;
@@ -262,6 +240,7 @@ void vector_swap(struct vecset * self, size_t i, size_t j)
     self->data[j] = tmp;
 }
 
+/* Creates a partition in the vecset */
 long vector_partition(struct vecset * self, long i, long j, comp_func_t func, const void * ctx)
 {
     long pivot_index       = i;
@@ -279,6 +258,7 @@ long vector_partition(struct vecset * self, long i, long j, comp_func_t func, co
     return l;
 }
 
+/* Quick sort function, used in vector_set_sort */
 void vector_quick_sort_partial(struct vecset * data, long i, long j, comp_func_t func, const void * ctx)
 {
     if (i < j) {
@@ -288,23 +268,3 @@ void vector_quick_sort_partial(struct vecset * data, long i, long j, comp_func_t
     }
 }
 
-// Temporary main function in order to test vecset functions
-
-/*int main() {
- *      struct vecset *set = malloc(sizeof(struct vecset));
- *      vecset_create(set);
- *      struct vec *v = malloc(sizeof(struct vec));
- *      struct vec *v1 = malloc(sizeof(struct vec));
- *      vec_create(v, 8, 6);
- *      vec_create(v1, 2, 3);
- *      vecset_add(set, *v);
- *      vecset_add(set, *v1);
- *      vector_set_sort(set, compare_all, NULL);
- *        vecset_dump(set);
- *      const struct vec *res = vecset_min(set, &compare_x, NULL);
- *      vec_dump(res);
- *      vec_destroy(v);
- *      vec_destroy(v1);
- *      vecset_destroy(set);
- *      return 0;
- * }*/
