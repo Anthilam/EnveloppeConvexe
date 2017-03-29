@@ -267,4 +267,3 @@ void vector_quick_sort_partial(struct vecset * data, long i, long j, comp_func_t
         vector_quick_sort_partial(data, p + 1, j, func, ctx);
     }
 }
-

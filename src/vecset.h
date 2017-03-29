@@ -22,7 +22,7 @@
 struct vec {
 	double x;
 	double y;
-}; 
+};
 
 /* vecset structure: represents a set vectors */
 struct vecset {

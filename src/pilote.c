@@ -39,14 +39,17 @@ int main()
         vecset_add(self, p);
     }
 	// Uncomment the algorithm you want to use and comment the others  :
-    jarvis_march(self, out);
-    //graham_scan(self, out)
-    //quickhull(self, out);
-    //------------------------------------------------------------------
+    //jarvis_march(self, out);
+    //graham_scan(self, out);
+    quickhull(self, out);
+  //------------------------------------------------------------------
 
-    //Prints the output : 
+    //Prints the output :
     printf("%lu\n", out->size);
     vecset_dump(out);
+
+    vecset_destroy(self);
+    vecset_destroy(out);
 
     return 0;
 }

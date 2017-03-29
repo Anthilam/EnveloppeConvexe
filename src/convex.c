@@ -25,11 +25,10 @@ void jarvis_march(const struct vecset * in, struct vecset * out)
         struct vec * v = malloc(sizeof(struct vec));
         vec_create(v, (in->data[0].x + in->data[1].x) / 2, (in->data[0].y + in->data[1].y) / 2);
         vecset_add(out, *v);
+        vec_destroy(v);
     } else {
         const struct vec * first = vecset_min(in, &compare_left_bottom, NULL);
-        struct vec * current     = malloc(sizeof(struct vec));
-        current->x = first->x;
-        current->y = first->y;
+        struct vec * current = first;
         struct vec * next;
         int r = 0;
 
@@ -108,7 +107,7 @@ struct vecset * findhull(struct vecset * S, const struct vec * X, const struct v
     double m = (X->y - Y->y) / (X->x - Y->x);
     double p = X->y - m * X->x;
 
-    struct vec * M = malloc(sizeof(struct vec));
+    struct vec * M;
     double res     = 0;
     for (int i = 0; i < S->size; ++i) {
         if ((fabs(m * S->data[i].x - S->data[i].y + p) / sqrt(pow(m, 2) + 1)) > res) {
@@ -124,25 +123,23 @@ struct vecset * findhull(struct vecset * S, const struct vec * X, const struct v
 
     for (size_t i = 0; i < S->size; i++) {
         if (S->data[i].x != M->x && S->data[i].y != M->y) {
-            const struct vec test = S->data[i];
+            const struct vec T = S->data[i];
             // on the left of XM
-            if (is_left_turn(X, M, &test)) {
-                vecset_push(S1, S->data[i]);
+            if (is_left_turn(X, M, &T)) {
+                vecset_add(S1, S->data[i]);
                 // on the left of MY
-            } else if (is_left_turn(M, Y, &test)) {
-                vecset_push(S2, S->data[i]);
+            } else if (is_left_turn(M, Y, &T)) {
+                vecset_add(S2, S->data[i]);
             }
         }
     }
 
-    struct vecset * R1 = malloc(sizeof(struct vecset));
-    struct vecset * R2 = malloc(sizeof(struct vecset));
-
-    R1 = findhull(S1, X, M);
-    R2 = findhull(S2, M, Y);
+    struct vecset * R1 = findhull(S1, X, M);
+    struct vecset * R2 = findhull(S2, M, Y);
 
     struct vecset * R = malloc(sizeof(struct vecset));
     vecset_create(R);
+
     for (int i = 0; i < R1->size; ++i) {
         vecset_add(R, R1->data[i]);
     }
@@ -151,6 +148,8 @@ struct vecset * findhull(struct vecset * S, const struct vec * X, const struct v
         vecset_add(R, R2->data[i]);
     }
 
+    vecset_destroy(S1);
+    vecset_destroy(S2);
     return R;
 } /* findhull */
 
@@ -183,11 +182,8 @@ void quickhull(const struct vecset * in, struct vecset * out)
         }
     }
 
-    struct vecset * R1 = malloc(sizeof(struct vecset));
-    struct vecset * R2 = malloc(sizeof(struct vecset));
-
-    R1 = findhull(S1, &A, &B);
-    R2 = findhull(S2, &B, &A);
+    struct vecset * R1 = findhull(S1, &A, &B);
+    struct vecset * R2 = findhull(S2, &B, &A);
 
     vecset_add(out, A);
     for (int i = 0; i < R1->size; ++i) {
@@ -197,4 +193,9 @@ void quickhull(const struct vecset * in, struct vecset * out)
     for (int i = 0; i < R2->size; ++i) {
         vecset_add(out, R2->data[i]);
     }
+
+    vecset_destroy(R1);
+    vecset_destroy(R2);
+    vecset_destroy(S1);
+    vecset_destroy(S2);
 } /* quickhull */
