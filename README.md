@@ -15,10 +15,12 @@ You need to install thoses in order to launch the program :
 
 You have to uncomment the algorithm that you want to run in "pilote.c"
 ```
-// Uncomment the algorithm you want to use and comment the others  :
-  //jarvis_march(self, out);
-  //graham_scan(self, out);
-  quickhull(self, out);
+//--------------------------------------------------------------------------
+// Uncomment the algorithm you want to use and comment the others
+jarvis_march(self, out);
+//graham_scan(self, out);
+//quickhull(self, out);
+//--------------------------------------------------------------------------
 ```
 
 Then, you can run the command :
@@ -34,7 +36,7 @@ N is the number of points in the scatter plot.
 - [x] Graham scan
 - [x] Quickhull
 - [x] View is working
-- [ ] Memory leaks (in Quickhull)
+- [x] No memory leaks
 
 ## Built with
 
