@@ -38,5 +38,5 @@ N is the number of points in the scatter plot.
 
 ## Built with
 
-*[Atom](https://atom.io/)
-*[GEdit](https://help.gnome.org/users/gedit/stable/)
+* [Atom](https://atom.io/)
+* [GEdit](https://help.gnome.org/users/gedit/stable/)
