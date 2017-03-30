@@ -1,6 +1,6 @@
 # EnveloppeConvexe
 
-[GitHub Link](www.github.com/Anthilam/EnveloppeConvexe)
+[GitHub Link](https://www.github.com/Anthilam/EnveloppeConvexe)
 
 The goal of that project is to implements 3 different convex hull algorithms
 
