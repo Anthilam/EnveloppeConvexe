@@ -150,6 +150,7 @@ struct vecset * findhull(struct vecset * S, const struct vec * X, const struct v
 
     vecset_destroy(S1);
     vecset_destroy(S2);
+
     return R;
 } /* findhull */
 
@@ -194,8 +195,8 @@ void quickhull(const struct vecset * in, struct vecset * out)
         vecset_add(out, R2->data[i]);
     }
 
-    vecset_destroy(R1);
-    vecset_destroy(R2);
     vecset_destroy(S1);
     vecset_destroy(S2);
+    vecset_destroy(R1);
+    vecset_destroy(R2);
 } /* quickhull */
